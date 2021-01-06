@@ -46,7 +46,7 @@ function getFaceRectFromFrame(frame) {
 
 /**
  * Get video frames and get recognition results
- * @param {Frameset} frameset 
+ * @param {FrameSet} frameset
  */
 function getDetectedFaces(frameset) {
   for(let i = 0; i < frameset.size; i++) {
