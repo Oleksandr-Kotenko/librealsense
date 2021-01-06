@@ -9,7 +9,7 @@
 const rs2 = require('../../index.js');
 const {GLFWWindow, glfw} = require('../glfw-window.js');
 const cv = require('opencv4nodejs');
-const { PNG } = require('pngjs');
+const { frameToBuffer } = require('./common');
 
 // A GLFW Window to display the captured image
 const win = new GLFWWindow(1280, 720, 'Node.js Detect Example');
@@ -26,15 +26,7 @@ const classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
  * @param {Frame} frame - video frame from framset
  */
 function getFaceRectFromFrame(frame) {
-  const opt = {
-    width: frame.width,
-    height: frame.height,
-    inputColorType: 2,
-  };
-
-  const png = new PNG(opt);
-  png.data = frame.getData();
-  const buf = PNG.sync.write(png, opt);
+  const buf = frameToBuffer(frame);
   
   const image = cv.imdecode(buf);
   if(image.empty) {

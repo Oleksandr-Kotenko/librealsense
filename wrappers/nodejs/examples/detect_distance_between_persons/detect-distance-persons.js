@@ -9,8 +9,8 @@
 const rs2 = require('../../index.js');
 const {GLFWWindow, glfw} = require('../glfw-window.js');
 const cv = require('opencv4nodejs');
-const { PNG } = require('pngjs');
 const { loadNet } = require('./dnn/net-helper');
+const { frameToMat, depthFrameToMeters } = require('./common');
 
 // A GLFW Window to display the captured image
 const win = new GLFWWindow(1280, 720, 'Node.js Detect Example');
@@ -22,11 +22,15 @@ const colorizer = new rs2.Colorizer();
 const net = loadNet();
 
 // Start the camera
-pipeline.start();
+const config = pipeline.start();
+const profile = config.getStream('RS2_STREAM_COLOR');
 
 while (! win.shouldWindowClose()) {
 
   const frameset = pipeline.waitForFrames();
+  const colorFrame = frameset.colorFrame;
+  const depthFrame = frameset.depthFrame;
+  const matFrame = frameToMat(frameset);
   // Paint the images onto the window
   win.beginPaint();
   const color = frameset.colorFrame;
