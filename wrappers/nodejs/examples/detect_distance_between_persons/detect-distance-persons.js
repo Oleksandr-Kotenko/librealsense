@@ -23,7 +23,7 @@ const net = loadNet();
 
 // Start the camera
 const config = pipeline.start();
-const profile = config.getStream('RS2_STREAM_COLOR');
+const profile = config.getStream('color');
 
 while (! win.shouldWindowClose()) {
 

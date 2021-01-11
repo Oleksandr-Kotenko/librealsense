@@ -70,5 +70,5 @@ const depthFrameToMeters = depthFrame => {
 module.exports = {
   frameToMat,
   depthFrameToMeters,
-  frameToBuf
+  frameToBuffer,
 };
