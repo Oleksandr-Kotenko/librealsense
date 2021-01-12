@@ -17,6 +17,24 @@ const loadNet = () => {
   return cv.readNetFromCaffe(prototxt, modelFile);
 };
 
+const classifyImage = (net, imageMat, scaleFactor, inWidth, inHeight, meanVal) => {
+  const size = new cv.Size(inWidth, inHeight);
+  const vec3 = new cv.Vec3(meanVal, meanVal, meanVal);
+  const inputBlob = cv.blobFromImage(imageMat, scaleFactor, size, vec3, false);
+
+  net.setInput(inputBlob, 'data');
+  const outputBlob = net.forward('detection_out');
+  const numRows = outputBlob.sizes.slice(2, 3);
+  const persons = [];
+  for (let y = 0; y < numRows; y += 1) {
+    const confidence = outputBlob.at([0, 0, y, 2]);
+    const classId = outputBlob.at([0, 0, y, 1]);
+    // TODO: filter person results and count center of coordinates
+  }
+  return outputBlob;
+};
+
 module.exports = {
   loadNet,
+  classifyImage,
 };
