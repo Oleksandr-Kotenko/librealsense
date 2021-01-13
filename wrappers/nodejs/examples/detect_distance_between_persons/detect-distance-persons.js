@@ -9,7 +9,7 @@
 const rs2 = require('../../index.js');
 const {GLFWWindow, glfw} = require('../glfw-window.js');
 const cv = require('opencv4nodejs');
-const { loadNet, classifyImage } = require('./dnn/net-helper');
+const { loadNet, classifyPersons } = require('./dnn/net-helper');
 const { frameToMat, depthFrameToMeters } = require('./common');
 
 const IN_WIDTH = 300;
@@ -17,8 +17,6 @@ const IN_HEIGHT = 300;
 const WHRatio = IN_WIDTH / IN_HEIGHT;
 const IN_SCALE_FACTOR = 0.007843;
 const MEAN_VAL = 127.5;
-
-const classNames = ["person"];
 
 
 // A GLFW Window to display the captured image
@@ -41,7 +39,7 @@ while (! win.shouldWindowClose()) {
   const depthFrame = frameset.depthFrame;
   const colorMat = frameToMat(colorFrame);
 
-  classifyImage(net, colorMat, IN_SCALE_FACTOR, IN_WIDTH, IN_HEIGHT, MEAN_VAL);
+  classifyPersons(net, colorMat, IN_SCALE_FACTOR, IN_WIDTH, IN_HEIGHT, MEAN_VAL);
   // Paint the images onto the window
   win.beginPaint();
 
