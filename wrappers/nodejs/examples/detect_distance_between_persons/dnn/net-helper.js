@@ -42,6 +42,8 @@ const classifyPersons = (net, imageMat, scaleFactor, inWidth, inHeight, meanVal)
   for (let y = 0; y < numRows; y += 1) {
     const confidence = outputBlob.at([0, 0, y, 2]);
     const classId = outputBlob.at([0, 0, y, 1]);
+    console.log(`classId: ${classId}, confidence: ${confidence}`);
+
     if(classId === PERSON_CODE && confidence > confidenceThreshold ) {
       const xLeftBottom = imgWidth * outputBlob.at([0, 0, y, 3]);
       const yLeftBottom = imgHeight * outputBlob.at([0, 0, y, 4]);
